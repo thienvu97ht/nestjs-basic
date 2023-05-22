@@ -33,3 +33,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# API keys and secrets
+.env
+.env.development
