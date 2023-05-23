@@ -20,6 +20,7 @@ export class UsersService {
   };
 
   async create(createUserDto: CreateUserDto) {
+    console.log("🏆 ~ UsersService ~ create ~ createUserDto:", createUserDto);
     const hashPassword = this.getHashPassword(createUserDto.password);
 
     const user = await this.userModel.create({
