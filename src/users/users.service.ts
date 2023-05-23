@@ -20,7 +20,6 @@ export class UsersService {
   };
 
   async create(createUserDto: CreateUserDto) {
-    console.log("🏆 ~ UsersService ~ create ~ createUserDto:", createUserDto);
     const hashPassword = this.getHashPassword(createUserDto.password);
 
     const user = await this.userModel.create({
@@ -31,12 +30,17 @@ export class UsersService {
     return user;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const result = await this.userModel.find();
+    return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    try {
+      return await this.userModel.findById(id);
+    } catch (error) {
+      return "Not found user";
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
