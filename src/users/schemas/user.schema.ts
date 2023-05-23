@@ -13,7 +13,7 @@ export class User {
   @Prop({
     required: true,
   })
-  password: number;
+  password: string;
 
   @Prop()
   name: string;
