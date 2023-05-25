@@ -1,8 +1,14 @@
-import { Controller, Get, Render } from "@nestjs/common";
-import { AppService } from "./app.service";
+import { Controller, Post, Request, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { ApiTags } from "@nestjs/swagger";
-@ApiTags("Home")
+import { AuthGuard } from "@nestjs/passport";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
+import { AppService } from "./app.service";
+
+class LoginPayload {
+  username: string;
+  password: string;
+}
+@ApiTags("Auth")
 @Controller()
 export class AppController {
   constructor(
@@ -10,15 +16,10 @@ export class AppController {
     private readonly configService: ConfigService,
   ) {}
 
-  @Get() // route " " /=> api (restful)
-  @Render("home")
-  getHello() {
-    console.log("check port: ", this.configService.get<string>("PORT"));
-
-    const message = this.appService.getHello();
-
-    return {
-      message,
-    };
+  @UseGuards(AuthGuard("local"))
+  @Post("/login")
+  @ApiBody({ type: LoginPayload })
+  handleLogin(@Request() req) {
+    return req.user;
   }
 }
