@@ -1,8 +1,8 @@
 import { Controller, Post, Request, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { AuthGuard } from "@nestjs/passport";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { AppService } from "./app.service";
+import { LocalAuthGuard } from "./auth/local-auth.guard";
 
 class LoginPayload {
   username: string;
@@ -16,7 +16,7 @@ export class AppController {
     private readonly configService: ConfigService,
   ) {}
 
-  @UseGuards(AuthGuard("local"))
+  @UseGuards(LocalAuthGuard)
   @Post("/login")
   @ApiBody({ type: LoginPayload })
   handleLogin(@Request() req) {
