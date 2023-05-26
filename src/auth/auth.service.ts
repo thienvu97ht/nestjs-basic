@@ -3,7 +3,7 @@ import { UsersService } from "src/users/users.service";
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   // username/pass là 2 tham số mà thư viện passport trả về
   async validateUser(username: string, pass: string): Promise<any> {
