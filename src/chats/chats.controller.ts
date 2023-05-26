@@ -1,19 +1,20 @@
-import { Controller, Get, Render, Res } from "@nestjs/common";
+import { Controller, Get, Render } from "@nestjs/common";
 import { ChatsService } from "./chats.service";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Chats")
 @Controller("chats")
 export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
 
   @Get()
   @Render("index")
-  Home() {
+  home() {
     return;
   }
 
   @Get("/get-all")
-  async Chat(@Res() res) {
-    const messages = await this.chatsService.findAll();
-    res.json(messages);
+  findAll() {
+    return this.chatsService.findAll();
   }
 }
