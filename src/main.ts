@@ -17,11 +17,19 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle("Learn NestJS")
     .setVersion("1.0")
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, document);
+  document.security = [{ bearerAuth: [] }];
+
+  SwaggerModule.setup("api", app, document, {
+    swaggerOptions: {
+      persistAuthorization: true, // Lưu lại access_token khi refresh trang
+      defaultModelsExpandDepth: -1, // Ẩn thông tin các model khi khai báo Swagger
+    },
+  });
 
   await app.listen(configService.get<string>("PORT"));
 }
