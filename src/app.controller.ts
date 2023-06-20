@@ -2,8 +2,8 @@ import { Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from "@nestjs/swagger";
 import { AppService } from "./app.service";
 import { AuthService } from "./auth/auth.service";
-import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { LocalAuthGuard } from "./auth/local-auth.guard";
+import { Public } from "./decorator/customize";
 
 class LoginPayload {
   @ApiProperty({ example: "thien.vu97ht@gmail.com" })
@@ -21,6 +21,7 @@ export class AppController {
     private readonly authService: AuthService,
   ) {}
 
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post("/login")
   @ApiBody({
