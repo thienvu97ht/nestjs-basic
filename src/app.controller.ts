@@ -1,7 +1,8 @@
-import { Body, Controller, Post, Request, UseGuards } from "@nestjs/common";
+import { Controller, Post, Request, UseGuards } from "@nestjs/common";
 import { ApiBody, ApiProperty, ApiTags } from "@nestjs/swagger";
 import { AppService } from "./app.service";
 import { LocalAuthGuard } from "./auth/local-auth.guard";
+import { AuthService } from "./auth/auth.service";
 
 class LoginPayload {
   @ApiProperty({ example: "thien.vu97ht@gmail.com" })
@@ -13,7 +14,10 @@ class LoginPayload {
 @ApiTags("Auth")
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post("/login")
@@ -21,6 +25,6 @@ export class AppController {
     type: LoginPayload,
   })
   handleLogin(@Request() req) {
-    return req.user;
+    return this.authService.login(req.user);
   }
 }
