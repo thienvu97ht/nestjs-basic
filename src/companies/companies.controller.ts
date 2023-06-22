@@ -1,16 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { User } from "src/decorator/customize";
+import { IUser } from "src/users/user.interface";
 import { CompaniesService } from "./companies.service";
 import { CreateCompanyDto } from "./dto/create-company.dto";
 import { UpdateCompanyDto } from "./dto/update-company.dto";
-import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 
 @ApiTags("Company")
 @ApiBearerAuth()
@@ -19,8 +21,8 @@ export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
   @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companiesService.create(createCompanyDto);
+  create(@Body() createCompanyDto: CreateCompanyDto, @User() user: IUser) {
+    return this.companiesService.create(createCompanyDto, user);
   }
 
   @Get()
