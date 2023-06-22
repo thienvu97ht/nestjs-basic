@@ -6,6 +6,7 @@ import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { ChatsModule } from "./chats/chats.module";
 import { UsersModule } from "./users/users.module";
+import { softDeletePlugin } from "soft-delete-plugin-mongoose";
 
 @Module({
   imports: [
@@ -13,6 +14,10 @@ import { UsersModule } from "./users/users.module";
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>("MONGODB_URL"),
+        connectionFactory: (connection) => {
+          connection.plugin(softDeletePlugin);
+          return connection;
+        },
       }),
       inject: [ConfigService],
     }),
