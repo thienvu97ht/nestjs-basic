@@ -20,6 +20,14 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  // config CORS
+  app.enableCors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+  });
+
+  // config swagger
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle("Learn NestJS")
@@ -30,7 +38,6 @@ async function bootstrap() {
 
   SwaggerModule.setup("api", app, document, {
     swaggerOptions: {
-      persistAuthorization: true, // Lưu lại access_token khi refresh trang
       defaultModelsExpandDepth: -1, // Ẩn thông tin các model khi khai báo Swagger
     },
   });
