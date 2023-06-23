@@ -64,7 +64,7 @@ export class UsersService {
 
   async remove(id: string) {
     try {
-      return await this.userModel.softDelete({
+      return this.userModel.softDelete({
         _id: id,
       });
     } catch (error) {

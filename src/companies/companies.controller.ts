@@ -6,8 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { User } from "src/decorator/customize";
 import { IUser } from "src/users/user.interface";
 import { CompaniesService } from "./companies.service";
@@ -26,8 +27,24 @@ export class CompaniesController {
   }
 
   @Get()
-  findAll() {
-    return this.companiesService.findAll();
+  @ApiQuery({
+    name: "page",
+    type: Number,
+    required: false,
+    example: 1,
+  })
+  @ApiQuery({
+    name: "limit",
+    type: Number,
+    required: false,
+    example: 10,
+  })
+  findAll(
+    @Query("page") currentPage: string,
+    @Query("limit") limit: string,
+    @Query() qs: string,
+  ) {
+    return this.companiesService.findAll(+currentPage, +limit, qs);
   }
 
   @Get(":id")
@@ -45,7 +62,7 @@ export class CompaniesController {
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.companiesService.remove(+id);
+  remove(@Param("id") id: string, @User() user: IUser) {
+    return this.companiesService.remove(id, user);
   }
 }
