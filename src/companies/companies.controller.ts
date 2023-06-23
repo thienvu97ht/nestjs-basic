@@ -39,6 +39,11 @@ export class CompaniesController {
     required: false,
     example: 10,
   })
+  @ApiQuery({
+    name: "name",
+    type: String,
+    required: false,
+  })
   findAll(
     @Query("page") currentPage: string,
     @Query("limit") limit: string,

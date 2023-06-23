@@ -25,7 +25,7 @@ export class CompaniesService {
   }
 
   async findAll(currentPage: number, limit: number, qs: string) {
-    const { filter, sort, projection, population } = aqp(qs);
+    const { filter, sort, population } = aqp(qs);
     delete filter.page;
     delete filter.limit;
 
@@ -38,8 +38,7 @@ export class CompaniesService {
       .find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      // @ts-ignore: Unreachable code error
-      .sort(sort)
+      .sort(sort as any)
       .populate(population)
       .exec();
 
