@@ -9,7 +9,7 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { User } from "src/decorator/customize";
+import { ResponseMessage, User } from "src/decorator/customize";
 import { IUser } from "src/users/user.interface";
 import { CompaniesService } from "./companies.service";
 import { CreateCompanyDto } from "./dto/create-company.dto";
@@ -27,6 +27,7 @@ export class CompaniesController {
   }
 
   @Get()
+  @ResponseMessage("Fetch list company with pagination")
   @ApiQuery({
     name: "page",
     type: Number,
