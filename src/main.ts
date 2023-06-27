@@ -1,12 +1,12 @@
+import { ValidationPipe, VersioningType } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { NestFactory, Reflector } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
 import { AppModule } from "./app.module";
-import { ConfigService } from "@nestjs/config";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { ValidationPipe } from "@nestjs/common";
 import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { TransformInterceptor } from "./core/transform.interceptor";
+import { setupSwagger } from "./setup-swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -29,20 +29,14 @@ async function bootstrap() {
     preflightContinue: false,
   });
 
-  // config swagger
-  const config = new DocumentBuilder()
-    .addBearerAuth()
-    .setTitle("Learn NestJS")
-    .setVersion("1.0")
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  document.security = [{ bearerAuth: [] }];
-
-  SwaggerModule.setup("api", app, document, {
-    swaggerOptions: {
-      defaultModelsExpandDepth: -1, // Ẩn thông tin các model khi khai báo Swagger
-    },
+  // config versioning
+  app.setGlobalPrefix("api");
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: ["1"],
   });
+
+  setupSwagger(app);
 
   await app.listen(configService.get<string>("PORT"));
 }
