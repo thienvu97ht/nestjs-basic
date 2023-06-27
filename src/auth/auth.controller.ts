@@ -1,8 +1,16 @@
-import { Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from "@nestjs/swagger";
-import { Public } from "src/decorator/customize";
-import { LocalAuthGuard } from "./local-auth.guard";
+import { Public, ResponseMessage } from "src/decorator/customize";
+import { RegisterUserDto } from "src/users/dto/create-user.dto";
 import { AuthService } from "./auth.service";
+import { LocalAuthGuard } from "./local-auth.guard";
 
 class LoginPayload {
   @ApiProperty({ example: "thien.vu97ht@gmail.com" })
@@ -30,5 +38,15 @@ export class AuthController {
   @Get("profile")
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Post("/register")
+  @Public()
+  @ResponseMessage("Register a new user")
+  @ApiBody({
+    type: RegisterUserDto,
+  })
+  handleRegister(@Body() registerUserDto: RegisterUserDto) {
+    return this.authService.register(registerUserDto);
   }
 }

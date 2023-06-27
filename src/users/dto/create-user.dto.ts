@@ -35,7 +35,7 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: "Age không được để trống!" })
-  age: string;
+  age: number;
 
   @ApiProperty()
   @IsNotEmpty({ message: "Gender không được để trống!" })
@@ -73,7 +73,7 @@ export class RegisterUserDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: "Age không được để trống!" })
-  age: string;
+  age: number;
 
   @ApiProperty()
   @IsNotEmpty({ message: "Gender không được để trống!" })
