@@ -3,10 +3,18 @@ import {
   Controller,
   Get,
   Post,
-  Request,
+  Req,
+  Res,
   UseGuards,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCookieAuth,
+  ApiProperty,
+  ApiTags,
+} from "@nestjs/swagger";
+import { Response } from "express";
 import { Public, ResponseMessage } from "src/decorator/customize";
 import { RegisterUserDto } from "src/users/dto/create-user.dto";
 import { AuthService } from "./auth.service";
@@ -32,12 +40,12 @@ export class AuthController {
   @ApiBody({
     type: LoginPayload,
   })
-  handleLogin(@Request() req) {
-    return this.authService.login(req.user);
+  handleLogin(@Req() req, @Res({ passthrough: true }) response: Response) {
+    return this.authService.login(req.user, response);
   }
 
   @Get("profile")
-  getProfile(@Request() req) {
+  getProfile(@Req() req) {
     return req.user;
   }
 
