@@ -11,7 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       // Giải mã token
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>("JWT_ACCESS_TOKEN"),
+      secretOrKey: configService.get<string>("JWT_ACCESS_TOKEN_SECRET"),
     });
   }
 
