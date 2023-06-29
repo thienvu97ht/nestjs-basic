@@ -7,16 +7,11 @@ import {
   Res,
   UseGuards,
 } from "@nestjs/common";
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiCookieAuth,
-  ApiProperty,
-  ApiTags,
-} from "@nestjs/swagger";
-import { Response } from "express";
-import { Public, ResponseMessage } from "src/decorator/customize";
+import { ApiBearerAuth, ApiBody, ApiProperty, ApiTags } from "@nestjs/swagger";
+import { Request, Response } from "express";
+import { Public, ResponseMessage, User } from "src/decorator/customize";
 import { RegisterUserDto } from "src/users/dto/create-user.dto";
+import { IUser } from "src/users/user.interface";
 import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./local-auth.guard";
 
@@ -44,11 +39,6 @@ export class AuthController {
     return this.authService.login(req.user, response);
   }
 
-  @Get("profile")
-  getProfile(@Req() req) {
-    return req.user;
-  }
-
   @Post("/register")
   @Public()
   @ResponseMessage("Register a new user")
@@ -57,5 +47,24 @@ export class AuthController {
   })
   handleRegister(@Body() registerUserDto: RegisterUserDto) {
     return this.authService.register(registerUserDto);
+  }
+
+  @Get("profile")
+  getProfile(@Req() req) {
+    return req.user;
+  }
+
+  @Get("account")
+  @ResponseMessage("Get user information")
+  handleGetAccount(@User() user: IUser) {
+    return { user };
+  }
+
+  @Get("refresh")
+  @Public()
+  @ResponseMessage("Get user refresh token")
+  handleRefreshToken(@Req() request: Request) {
+    const refreshToken = request.cookies["refresh_token"];
+    return this.authService.processNewToken(refreshToken);
   }
 }
