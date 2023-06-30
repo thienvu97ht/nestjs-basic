@@ -35,20 +35,20 @@ export class UsersController {
   @Public()
   @ResponseMessage("Fetch user with pagination")
   @ApiQuery({
-    name: "page",
+    name: "current",
     type: Number,
     required: false,
     example: 1,
   })
   @ApiQuery({
-    name: "limit",
+    name: "pageSize",
     type: Number,
     required: false,
     example: 10,
   })
   findAll(
-    @Query("page") currentPage: string,
-    @Query("limit") limit: string,
+    @Query("current") currentPage: string,
+    @Query("pageSize") limit: string,
     @Query() qs: string,
   ) {
     return this.usersService.findAll(+currentPage, +limit, qs);

@@ -29,13 +29,13 @@ export class CompaniesController {
   @Get()
   @ResponseMessage("Fetch list company with pagination")
   @ApiQuery({
-    name: "page",
+    name: "current",
     type: Number,
     required: false,
     example: 1,
   })
   @ApiQuery({
-    name: "limit",
+    name: "pageSize",
     type: Number,
     required: false,
     example: 10,
@@ -46,8 +46,8 @@ export class CompaniesController {
     required: false,
   })
   findAll(
-    @Query("page") currentPage: string,
-    @Query("limit") limit: string,
+    @Query("current") currentPage: string,
+    @Query("pageSize") limit: string,
     @Query() qs: string,
   ) {
     return this.companiesService.findAll(+currentPage, +limit, qs);
