@@ -90,7 +90,7 @@ export class AuthService {
       });
 
       // todo
-      let user = await this.usersService.findUserByToken(refreshToken);
+      const user = await this.usersService.findUserByToken(refreshToken);
       if (user) {
         // update refresh token
         const { _id, name, email, role } = user;

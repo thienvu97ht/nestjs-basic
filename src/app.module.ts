@@ -7,7 +7,7 @@ import { AuthModule } from "./auth/auth.module";
 import { ChatsModule } from "./chats/chats.module";
 import { UsersModule } from "./users/users.module";
 import { softDeletePlugin } from "soft-delete-plugin-mongoose";
-import { CompaniesModule } from './companies/companies.module';
+import { CompaniesModule } from "./companies/companies.module";
 
 @Module({
   imports: [
