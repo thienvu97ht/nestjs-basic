@@ -8,25 +8,21 @@ import {
   Post,
   Query,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
+import { Public, ResponseMessage, User } from "src/decorator/customize";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { UsersService } from "./users.service";
 import { IUser } from "./user.interface";
-import { Public, ResponseMessage, User } from "src/decorator/customize";
+import { UsersService } from "./users.service";
 
 @ApiTags("Users")
 @ApiBearerAuth()
 @Controller("users")
-// @Controller({ path: "users", version: ["1"] })
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
   @ResponseMessage("Create a new User")
-  @ApiBody({
-    type: CreateUserDto,
-  })
   create(@Body() createUserDto: CreateUserDto, @User() user: IUser) {
     return this.usersService.create(createUserDto, user);
   }

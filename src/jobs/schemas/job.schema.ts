@@ -11,7 +11,7 @@ export class Job {
   name: string;
 
   @Prop()
-  skill: string[];
+  skills: string[];
 
   @Prop({
     type: Object,
@@ -26,9 +26,6 @@ export class Job {
 
   @Prop()
   quantity: number;
-
-  @Prop()
-  gender: string;
 
   @Prop()
   level: string;
