@@ -1,9 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import {
+  IsArray,
+  IsDate,
   IsNotEmpty,
   IsNotEmptyObject,
   IsObject,
+  IsString,
   ValidateNested,
 } from "class-validator";
 import mongoose from "mongoose";
@@ -25,6 +28,8 @@ export class CreateJobDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: "Skill không được để trống!" })
+  @IsArray({ message: "Skills có định dạng array" })
+  @IsString({ each: true, message: "Skill định dạng là string" })
   skills: string[];
 
   @ApiProperty()
@@ -47,14 +52,19 @@ export class CreateJobDto {
   level: string;
 
   @ApiProperty()
+  @IsNotEmpty({ message: "Description không được để trống!" })
   description: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: "StartDate không được để trống!" })
+  @Transform(({ value }) => new Date(value))
+  @IsDate({ message: "StartDate có định dạng là Date" })
   startDate: Date;
 
   @ApiProperty()
   @IsNotEmpty({ message: "EndDate không được để trống!" })
+  @Transform(({ value }) => new Date(value))
+  @IsDate({ message: "EndDate có định dạng là Date" })
   endDate: Date;
 
   @ApiProperty()
