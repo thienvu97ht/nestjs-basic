@@ -3,6 +3,7 @@ import {
   SetMetadata,
   createParamDecorator,
 } from "@nestjs/common";
+import { ApiBody } from "@nestjs/swagger";
 
 export const IS_PUBLIC_KEY = "isPublic";
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true); // key:value
@@ -17,3 +18,19 @@ export const User = createParamDecorator(
     return request.user;
   },
 );
+
+export const ApiFile =
+  (fileName = "file"): MethodDecorator =>
+  (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+    ApiBody({
+      schema: {
+        type: "object",
+        properties: {
+          [fileName]: {
+            type: "string",
+            format: "binary",
+          },
+        },
+      },
+    })(target, propertyKey, descriptor);
+  };
