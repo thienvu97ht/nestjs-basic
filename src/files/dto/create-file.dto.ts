@@ -1,1 +1,11 @@
-export class CreateFileDto {}
+import { ApiFile } from "src/decorator/customize";
+
+export class SingleFileFormDataDTO {
+  @ApiFile()
+  file: Express.Multer.File;
+}
+
+export class MultipleFilesFormDataDTO {
+  @ApiFile({ isArray: true })
+  files: Express.Multer.File[];
+}
