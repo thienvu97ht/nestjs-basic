@@ -12,12 +12,19 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiHeader,
+  ApiTags,
+} from "@nestjs/swagger";
 import {
   MultipleFilesFormDataDTO,
   SingleFileFormDataDTO,
 } from "./dto/create-file.dto";
 import { FilesService } from "./files.service";
+import { ResponseMessage } from "src/decorator/customize";
 
 @ApiTags("Upload")
 @ApiBearerAuth()
@@ -26,6 +33,10 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post("upload")
+  @ResponseMessage("Upload single file")
+  @ApiHeader({
+    name: "folder_type",
+  })
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: SingleFileFormDataDTO })
   @UseInterceptors(FileInterceptor("file"))
@@ -44,10 +55,16 @@ export class FilesController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
+    return {
+      filename: file.filename,
+    };
   }
 
   @Post("multi-upload")
+  @ResponseMessage("Upload multi file")
+  @ApiHeader({
+    name: "folder_type",
+  })
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: MultipleFilesFormDataDTO })
   @UseInterceptors(FilesInterceptor("files"))
