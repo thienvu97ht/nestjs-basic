@@ -19,6 +19,10 @@ class Company {
   @ApiProperty()
   @IsNotEmpty({ message: "Name company không được để trống!" })
   name: string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: "Logo không được để trống!" })
+  logo: string;
 }
 
 export class CreateJobDto {
@@ -54,6 +58,10 @@ export class CreateJobDto {
   @ApiProperty()
   @IsNotEmpty({ message: "Description không được để trống!" })
   description: string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: "Location không được để trống!" })
+  location: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: "StartDate không được để trống!" })

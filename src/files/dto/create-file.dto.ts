@@ -2,7 +2,7 @@ import { ApiFile } from "src/decorator/customize";
 
 export class SingleFileFormDataDTO {
   @ApiFile()
-  file: Express.Multer.File;
+  fileUpload: Express.Multer.File;
 }
 
 export class MultipleFilesFormDataDTO {

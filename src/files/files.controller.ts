@@ -35,7 +35,7 @@ export class FilesController {
   })
   @ApiConsumes("multipart/form-data")
   @ApiBody({ type: SingleFileFormDataDTO })
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(FileInterceptor("fileUpload"))
   uploadFile(
     @UploadedFile(
       new ParseFilePipeBuilder()
@@ -52,7 +52,7 @@ export class FilesController {
     file: Express.Multer.File,
   ) {
     return {
-      filename: file.filename,
+      fileName: file.filename,
     };
   }
 

@@ -9,7 +9,7 @@ import {
   Query,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { ResponseMessage, User } from "src/decorator/customize";
+import { Public, ResponseMessage, User } from "src/decorator/customize";
 import { IUser } from "src/users/user.interface";
 import { CreateJobDto } from "./dto/create-job.dto";
 import { UpdateJobDto } from "./dto/update-job.dto";
@@ -28,6 +28,7 @@ export class JobsController {
   }
 
   @Get()
+  @Public()
   @ResponseMessage("Fetch jobs with pagination")
   @ApiQuery({
     name: "current",
@@ -50,6 +51,7 @@ export class JobsController {
   }
 
   @Get(":id")
+  @Public()
   @ResponseMessage("Fetch a job by id")
   findOne(@Param("id") id: string) {
     return this.jobsService.findOne(id);
