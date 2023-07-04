@@ -13,4 +13,8 @@ export class CreateCompanyDto {
   @ApiProperty()
   @IsNotEmpty({ message: "Description không được để trống!" })
   description: string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: "Logo không được để trống!" })
+  logo: string;
 }

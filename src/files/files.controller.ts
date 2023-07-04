@@ -1,11 +1,7 @@
 import {
   Controller,
-  Delete,
-  Get,
   HttpStatus,
-  Param,
   ParseFilePipeBuilder,
-  Patch,
   Post,
   UploadedFile,
   UploadedFiles,
@@ -19,12 +15,12 @@ import {
   ApiHeader,
   ApiTags,
 } from "@nestjs/swagger";
+import { ResponseMessage } from "src/decorator/customize";
 import {
   MultipleFilesFormDataDTO,
   SingleFileFormDataDTO,
 } from "./dto/create-file.dto";
 import { FilesService } from "./files.service";
-import { ResponseMessage } from "src/decorator/customize";
 
 @ApiTags("Upload")
 @ApiBearerAuth()
@@ -70,25 +66,5 @@ export class FilesController {
   @UseInterceptors(FilesInterceptor("files"))
   uploadMultiFile(@UploadedFiles() files: Array<Express.Multer.File>) {
     console.log(files);
-  }
-
-  @Get()
-  findAll() {
-    return this.filesService.findAll();
-  }
-
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.filesService.findOne(+id);
-  }
-
-  @Patch(":id")
-  update(@Param("id") id: string) {
-    return this.filesService.update(+id);
-  }
-
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.filesService.remove(+id);
   }
 }
