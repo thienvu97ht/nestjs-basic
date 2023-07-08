@@ -15,7 +15,6 @@ export class CreateResumeDto {
   @IsNotEmpty({ message: "Url không được để trống!" })
   url: string;
 
-  @ApiProperty()
   @IsNotEmpty({ message: "Status không được để trống!" })
   status: string;
 
@@ -33,8 +32,6 @@ export class CreateUserCvDto {
   @IsNotEmpty({ message: "Url không được để trống!" })
   url: string;
 
-  @ApiProperty()
-  @IsNotEmpty({ message: "Status không được để trống!" })
   status: string;
 
   @ApiProperty()
