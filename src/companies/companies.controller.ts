@@ -55,8 +55,9 @@ export class CompaniesController {
   }
 
   @Get(":id")
+  @Public()
   findOne(@Param("id") id: string) {
-    return this.companiesService.findOne(+id);
+    return this.companiesService.findOne(id);
   }
 
   @Patch(":id")
