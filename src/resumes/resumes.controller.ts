@@ -30,16 +30,16 @@ export class ResumesController {
   @Get()
   @ResponseMessage("Fetch resumes with pagination")
   @ApiQuery({
-    name: "current",
-    type: Number,
+    name: "populate",
+    type: String,
     required: false,
-    example: 1,
+    example: "companyId,jobId",
   })
   @ApiQuery({
-    name: "pageSize",
-    type: Number,
+    name: "fields",
+    type: String,
     required: false,
-    example: 10,
+    example: "companyId._id,companyId.name,companyId.logo,jobId._id,jobId.name",
   })
   findAll(
     @Query("current") currentPage: string,

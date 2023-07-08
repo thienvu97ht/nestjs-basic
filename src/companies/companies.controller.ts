@@ -30,18 +30,6 @@ export class CompaniesController {
   @Public()
   @ResponseMessage("Fetch list company with pagination")
   @ApiQuery({
-    name: "current",
-    type: Number,
-    required: false,
-    example: 1,
-  })
-  @ApiQuery({
-    name: "pageSize",
-    type: Number,
-    required: false,
-    example: 10,
-  })
-  @ApiQuery({
     name: "name",
     type: String,
     required: false,

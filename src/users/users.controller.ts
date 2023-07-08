@@ -30,18 +30,6 @@ export class UsersController {
   @Get()
   @Public()
   @ResponseMessage("Fetch user with pagination")
-  @ApiQuery({
-    name: "current",
-    type: Number,
-    required: false,
-    example: 1,
-  })
-  @ApiQuery({
-    name: "pageSize",
-    type: Number,
-    required: false,
-    example: 10,
-  })
   findAll(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,

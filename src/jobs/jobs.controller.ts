@@ -30,18 +30,6 @@ export class JobsController {
   @Get()
   @Public()
   @ResponseMessage("Fetch jobs with pagination")
-  @ApiQuery({
-    name: "current",
-    type: Number,
-    required: false,
-    example: 1,
-  })
-  @ApiQuery({
-    name: "pageSize",
-    type: Number,
-    required: false,
-    example: 10,
-  })
   findAll(
     @Query("current") currentPage: string,
     @Query("pageSize") limit: string,
