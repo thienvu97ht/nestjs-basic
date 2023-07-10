@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { SoftDeleteModel } from "soft-delete-plugin-mongoose";
 import { IUser } from "src/users/user.interface";
@@ -15,6 +15,19 @@ export class PermissionsService {
   ) {}
 
   async create(createPermissionDto: CreatePermissionDto, user: IUser) {
+    const { apiPath, method } = createPermissionDto;
+
+    const isExist = await this.permissionModel.findOne({
+      apiPath,
+      method,
+    });
+
+    if (isExist) {
+      throw new BadRequestException(
+        `Permission với apiPath=${apiPath}, method=${method} đã tồn tại!`,
+      );
+    }
+
     const newPermission = await this.permissionModel.create({
       ...createPermissionDto,
       createdBy: {
