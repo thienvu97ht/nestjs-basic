@@ -13,6 +13,7 @@ import { PermissionsModule } from "./permissions/permissions.module";
 import { ResumesModule } from "./resumes/resumes.module";
 import { RolesModule } from "./roles/roles.module";
 import { UsersModule } from "./users/users.module";
+import { DatabasesModule } from './databases/databases.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { UsersModule } from "./users/users.module";
     ResumesModule,
     PermissionsModule,
     RolesModule,
+    DatabasesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
