@@ -7,6 +7,7 @@ import { CreateUserDto, RegisterUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User, UserDocument } from "./schemas/user.schema";
 import { IUser } from "./user.interface";
+import mongoose from "mongoose";
 
 @Injectable()
 export class UsersService {
@@ -82,16 +83,29 @@ export class UsersService {
 
   async findOne(id: string) {
     try {
-      return await this.userModel.findById(id).select("-password");
+      return await this.userModel
+        .findById(id)
+        .select("-password")
+        .populate({
+          path: "role",
+          select: {
+            name: 1,
+          },
+        });
     } catch (error) {
       return "Not found user";
     }
   }
 
   async findOneByUsername(username: string) {
-    return await this.userModel.findOne({
-      email: username,
-    });
+    return await this.userModel
+      .findOne({
+        email: username,
+      })
+      .populate({
+        path: "role",
+        select: { name: 1, permissions: 1 },
+      });
   }
 
   isValidPassword(password: string, hash: string) {
@@ -114,6 +128,15 @@ export class UsersService {
   }
 
   async remove(id: string, user: IUser) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return `Not found user`;
+    }
+
+    const foundUser = await this.userModel.findById(id);
+    if (foundUser.email === "admin@gmail.com") {
+      throw new BadRequestException("Không thể xoá tài khoản admin");
+    }
+
     try {
       await this.userModel.updateOne(
         {

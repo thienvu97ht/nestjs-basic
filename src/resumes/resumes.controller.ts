@@ -49,8 +49,8 @@ export class ResumesController {
     return this.resumesService.findAll(+currentPage, +limit, qs);
   }
 
-  @Get("/by-user")
-  @ResponseMessage("Fetch a resumes by user")
+  @Post("by-user")
+  @ResponseMessage("Get a resumes by user")
   findOneByUser(@User() user: IUser) {
     return this.resumesService.findByUser(user);
   }

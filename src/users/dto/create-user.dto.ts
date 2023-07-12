@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import {
   IsEmail,
+  IsMongoId,
   IsNotEmpty,
   IsNotEmptyObject,
   IsObject,
@@ -47,7 +48,8 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: "Role không được để trống!" })
-  role: string;
+  @IsMongoId({ each: true, message: "Role có định dạng là mông ID!" })
+  role: mongoose.Schema.Types.ObjectId;
 
   @ApiProperty()
   @IsNotEmptyObject()

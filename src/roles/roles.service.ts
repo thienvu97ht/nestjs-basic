@@ -78,7 +78,14 @@ export class RolesService {
 
   async findOne(id: string) {
     try {
-      return await this.roleModel.findById(id);
+      return await this.roleModel.findById(id).populate({
+        path: "permissions",
+        select: {
+          apiPath: 1,
+          name: 1,
+          method: 1,
+        },
+      });
     } catch (error) {
       return "Not found permission";
     }
@@ -89,14 +96,14 @@ export class RolesService {
       throw new BadRequestException("Not found role");
     }
 
-    const { name } = updateRoleDto;
-    const isExist = await this.roleModel.findOne({
-      name,
-    });
+    // const { name } = updateRoleDto;
+    // const isExist = await this.roleModel.findOne({
+    //   name,
+    // });
 
-    if (isExist) {
-      throw new BadRequestException(`Role với name="${name}" đã tồn tại!`);
-    }
+    // if (isExist) {
+    //   throw new BadRequestException(`Role với name="${name}" đã tồn tại!`);
+    // }
 
     return await this.roleModel.updateOne(
       {
@@ -113,6 +120,11 @@ export class RolesService {
   }
 
   async remove(id: string, user: IUser) {
+    const foundRole = await this.roleModel.findById(id);
+    if (foundRole.name === "ADMIN") {
+      throw new BadRequestException("Không thể xoá role ADMIN!");
+    }
+
     try {
       await this.roleModel.updateOne(
         {
