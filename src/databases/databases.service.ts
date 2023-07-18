@@ -45,7 +45,7 @@ export class DatabasesService implements OnModuleInit {
       // create role
       if (countRole === 0) {
         const permissions = await this.permissionModel.find({}).select("_id");
-        await this.permissionModel.insertMany([
+        await this.roleModel.insertMany([
           {
             name: ADMIN_ROLE,
             description: "Admin full quyền",

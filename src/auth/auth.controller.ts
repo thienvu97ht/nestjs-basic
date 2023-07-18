@@ -14,9 +14,10 @@ import { RegisterUserDto } from "src/users/dto/create-user.dto";
 import { IUser } from "src/users/user.interface";
 import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./local-auth.guard";
+import { RolesService } from "src/roles/roles.service";
 
 class LoginPayload {
-  @ApiProperty({ example: "thien.vu97ht@gmail.com" })
+  @ApiProperty({ example: "admin@gmail.com" })
   username: string;
 
   @ApiProperty({ example: "123456" })
@@ -26,7 +27,10 @@ class LoginPayload {
 @ApiBearerAuth()
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly roleService: RolesService,
+  ) {}
 
   @Post("/login")
   @Public()
@@ -56,7 +60,10 @@ export class AuthController {
 
   @Get("account")
   @ResponseMessage("Get user information")
-  handleGetAccount(@User() user: IUser) {
+  async handleGetAccount(@User() user: IUser) {
+    const temp = (await this.roleService.findOne(user.role._id)) as any;
+    console.log("🏆 ~ AuthController ~ handleGetAccount ~ temp:", temp);
+    user.permissions = temp.permissions;
     return { user };
   }
 

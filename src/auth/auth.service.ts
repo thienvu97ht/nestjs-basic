@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Response } from "express";
 import ms from "ms";
+import { RolesService } from "src/roles/roles.service";
 import { RegisterUserDto } from "src/users/dto/create-user.dto";
 import { IUser } from "src/users/user.interface";
 import { UsersService } from "src/users/users.service";
@@ -13,6 +14,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly rolesService: RolesService,
   ) {}
 
   // username/pass là 2 tham số mà thư viện passport trả về
@@ -22,7 +24,15 @@ export class AuthService {
     if (user) {
       const isValid = this.usersService.isValidPassword(pass, user.password);
       if (isValid) {
-        return user;
+        const userRole = user.role as unknown as { _id: string; name: string };
+        const temp = (await this.rolesService.findOne(userRole._id)) as any;
+
+        const objUser = {
+          ...user.toObject(),
+          permissions: temp?.permissions ?? [],
+        };
+
+        return objUser;
       }
     }
 
@@ -30,7 +40,7 @@ export class AuthService {
   }
 
   async login(user: IUser, response: Response) {
-    const { _id, name, email, role } = user;
+    const { _id, name, email, role, permissions } = user;
 
     const payload = {
       sub: "token login",
@@ -59,6 +69,7 @@ export class AuthService {
         name,
         email,
         role,
+        permissions,
       },
     };
   }
@@ -109,6 +120,10 @@ export class AuthService {
         // update user with refresh token
         await this.usersService.updateUserToken(refresh_token, _id.toString());
 
+        // fetch user's role
+        const userRole = user.role as unknown as { _id: string; name: string };
+        const temp = (await this.rolesService.findOne(userRole._id)) as any;
+
         // set refresh_token as cookies
         response.clearCookie("refresh_token");
 
@@ -124,6 +139,7 @@ export class AuthService {
             name,
             email,
             role,
+            permissions: temp?.permissions ?? [],
           },
         };
       } else {
