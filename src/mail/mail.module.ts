@@ -1,8 +1,10 @@
+import { MailerModule } from "@nestjs-modules/mailer";
+import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { join } from "path";
 import { MailController } from "./mail.controller";
 import { MailService } from "./mail.service";
-import { MailerModule } from "@nestjs-modules/mailer";
 
 //mail.module.ts
 @Module({
@@ -17,13 +19,14 @@ import { MailerModule } from "@nestjs-modules/mailer";
             pass: configService.get<string>("EMAIL_AUTH_PASSWORD"),
           },
         },
-        // template: {
-        // dir: join(__dirname, 'templates'),
-        // adapter: new HandlebarsAdapter(),
-        // options: {
-        // strict: true,
-        // },
-        // },
+        template: {
+          dir: join(__dirname, "templates"),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+        preview: true,
       }),
       inject: [ConfigService],
     }),

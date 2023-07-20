@@ -18,10 +18,10 @@ export class MailController {
   @ResponseMessage("Test email")
   async handleTestEmail() {
     await this.mailerService.sendMail({
-      to: "haryphamdev@gmail.com",
+      to: "thien.vu97ht123@gmail.com",
       from: '"Support Team" <support@example.com>', // override default from
       subject: "Welcome to Nice App! Confirm your Email",
-      html: "<b>welcome bla bla</b>", // HTML body content
+      template: "job",
     });
   }
 }
