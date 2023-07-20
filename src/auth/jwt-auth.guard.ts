@@ -40,16 +40,17 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     }
 
     // check permission
-    const targetMethod = request.method;
-    const targetEndpoint = request.route.path;
+    const targetMethod: string = request.method;
+    const targetEndpoint: string = request.route.path;
 
     const permissions = user?.permissions ?? [];
-    const isExist = permissions.find(
+    let isExist = permissions.find(
       (permission) =>
         targetMethod === permission.method &&
         targetEndpoint === permission.apiPath,
     );
 
+    if (targetEndpoint.startsWith("/api/v1/auth")) isExist = true;
     if (!isExist) {
       throw new ForbiddenException("Bạn không có quyền truy cập endpoint này!");
     }
