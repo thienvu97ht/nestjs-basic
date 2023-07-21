@@ -5,6 +5,10 @@ import { ConfigService } from "@nestjs/config";
 import { join } from "path";
 import { MailController } from "./mail.controller";
 import { MailService } from "./mail.service";
+import { MongooseModule } from "@nestjs/mongoose";
+import { Subscriber } from "rxjs";
+import { SubscriberSchema } from "src/subscribers/schemas/subscriber.schema";
+import { Job, JobSchema } from "src/jobs/schemas/job.schema";
 
 //mail.module.ts
 @Module({
@@ -30,6 +34,10 @@ import { MailService } from "./mail.service";
       }),
       inject: [ConfigService],
     }),
+    MongooseModule.forFeature([
+      { name: Subscriber.name, schema: SubscriberSchema },
+      { name: Job.name, schema: JobSchema },
+    ]),
   ],
   controllers: [MailController],
   providers: [MailService],
