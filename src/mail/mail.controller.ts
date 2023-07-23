@@ -10,7 +10,7 @@ import {
 import { SoftDeleteModel } from "soft-delete-plugin-mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { Job, JobDocument } from "src/jobs/schemas/job.schema";
-
+import { Cron, CronExpression } from "@nestjs/schedule";
 @ApiTags("Mail")
 @ApiBearerAuth()
 @Controller("mail")
@@ -26,6 +26,11 @@ export class MailController {
     @InjectModel(Job.name)
     private jobModel: SoftDeleteModel<JobDocument>,
   ) {}
+
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  testCron() {
+    console.log(">>> call me");
+  }
 
   @Get()
   @Public()
