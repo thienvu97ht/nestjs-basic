@@ -1,16 +1,9 @@
 import {
   ExecutionContext,
   SetMetadata,
-  applyDecorators,
   createParamDecorator,
 } from "@nestjs/common";
-import {
-  ApiExtraModels,
-  ApiProperty,
-  ApiPropertyOptions,
-  ApiQuery,
-  getSchemaPath,
-} from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger";
 
 export const IS_PUBLIC_KEY = "isPublic";
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true); // key:value
@@ -25,6 +18,10 @@ export const User = createParamDecorator(
     return request.user;
   },
 );
+
+export const IS_PUBLIC_PERMISSION = "isPublicPermission";
+export const SkipCheckPermission = () =>
+  SetMetadata(IS_PUBLIC_PERMISSION, true);
 
 export const ApiFile =
   (options?: ApiPropertyOptions): PropertyDecorator =>
