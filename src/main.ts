@@ -8,6 +8,7 @@ import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 import { TransformInterceptor } from "./core/transform.interceptor";
 import { setupSwagger } from "./setup-swagger";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -46,6 +47,9 @@ async function bootstrap() {
   });
 
   setupSwagger(app);
+
+  // config helmet
+  app.use(helmet());
 
   await app.listen(configService.get<string>("PORT"));
 }
