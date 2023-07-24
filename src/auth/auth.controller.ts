@@ -15,6 +15,7 @@ import { IUser } from "src/users/user.interface";
 import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./local-auth.guard";
 import { RolesService } from "src/roles/roles.service";
+import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 
 class LoginPayload {
   @ApiProperty({ example: "admin@gmail.com" })
@@ -35,6 +36,8 @@ export class AuthController {
   @Post("/login")
   @Public()
   @UseGuards(LocalAuthGuard)
+  @UseGuards(ThrottlerGuard)
+  @Throttle(5, 60)
   @ResponseMessage("User login")
   @ApiBody({
     type: LoginPayload,
